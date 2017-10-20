@@ -1,6 +1,8 @@
-from tkinter import *
+from Tkinter import *
 import random
 import time
+import matplotlib.pyplot as plt
+
 
 def draw(mat):
     global canvas
@@ -60,10 +62,24 @@ def compter(mat):
     compteur = 0
     for row in mat:
         for column in row:
-            if column == 1:
+            if column > 0:
                 compteur += 1
     return compteur
 
+def compter2(mat):
+    compteur = 0
+    for row in mat:
+        for column in row:
+            if column < 0:
+                compteur += 1
+    return compteur
+def compter3(mat):
+    compteur = 0
+    for row in mat:
+        for column in row:
+            if column == 0:
+                compteur += 1
+    return compteur
 
 size = 13
 mat = generate_matrix(size)
@@ -74,11 +90,27 @@ canvas = Canvas(fen, width=600, height=600, background='white')
 canvas.pack()
 #label=Label(fen,text=str(compteur), fg="black",width=31,font="parade 42 bold")
 #label.pack()
-    
-for loop in range(100):
+op = False
+liste= []
+liste2= []
+liste3= []
+for loop in range(30):
     #print("rouges: " + str(compter(mat)) + " | " + str(compter(mat)/(len(mat)*len(mat))*100) + "%")
+    liste.append(compter(mat))
+    liste2.append(compter2(mat))
+    liste3.append(compter3(mat))
     draw(mat)
+    if op == False :
+        op = True
     fen.update()
     mat=step(mat)
 fen.mainloop()
+plt.plot(liste)
+plt.plot(liste2)
+plt.plot(liste3)
+plt.ylabel('nombre de rouge')
+plt.xlabel('temps')
+plt.show()
+
+    
 
