@@ -3,36 +3,34 @@ import random
 import time
 import matplotlib.pyplot as plt
 
-def draw(mat):
+def afficher(mat):
     global grille
-    size = len(mat)
-    width = 600/size
-    for i in range(size):
-        for j in range(size):
-            if mat[size-j-1][i] > 0:
+    tailleMatrice = len(mat)
+    tailleCellule = 600/tailleMatrice
+    for i in range(tailleMatrice):
+        for j in range(tailleMatrice):
+            if mat[tailleMatrice-j-1][i] > 0:
                 color = 'red'
-            elif mat[size-j-1][i] < 0:
+            elif mat[tailleMatrice-j-1][i] < 0:
                 color = 'blue'
             else:
                 color = 'white'
-            cell = grille.create_rectangle(i*width, j*width, (i+1)*width, (j+1)*width, fill=color)
+            cell = grille.create_rectangle(i*tailleCellule, j*tailleCellule, (i+1)*tailleCellule, (j+1)*tailleCellule, fill=color)
 
-            
-
-def tracer(liste, size, population):
-    global graph, line_r, line_b
-    top = graph.create_line(0, 500-(size*size*2), 600, 500-(size*size*2), fill='black')
-    bottom = graph.create_line(0, 500, 600, 500, fill='black')
-    curve = [0,500]
+def tracer(liste, tailleMatrice, population):
+    global graphe, ligne_rouge, ligne_bleu
+    top = graphe.create_line(0, 500-(tailleMatrice*tailleMatrice*2), 600, 500-(tailleMatrice*tailleMatrice*2), fill='black')
+    bottom = graphe.create_line(0, 500, 600, 500, fill='black')
+    listePoint = [0,500]
     for i in range(len(liste)):
-        curve.append(int(600/(len(liste))*(i+1)))
-        curve.append(500-int(liste[i])*2)
+        listePoint.append(int(600/(len(liste))*(i+1)))
+        listePoint.append(500-int(liste[i])*2)
     if population == 'red':
-        graph.delete(line_r)
-        line_r = graph.create_line(curve, fill='red')
+        graphe.delete(ligne_rouge)
+        ligne_rouge = graphe.create_line(listePoint, fill='red')
     if population == 'blue':
-        graph.delete(line_b)
-        line_b = graph.create_line(curve, fill='blue')
+        graphe.delete(ligne_bleu)
+        ligne_bleu = graphe.create_line(listePoint, fill='blue')
 
 def force(mat, x, y):
     cpt = 0
@@ -43,82 +41,76 @@ def force(mat, x, y):
                 cpt += mat[x+i][y+j]
     return cpt
 
-def generate_matrix(size):
+def generer_matrice(tailleMatrice):
     mat = []
-    for line in range(size):
-        row=[]
-        for cell in range(size):
+    for ligne in range(tailleMatrice):
+        listeCellule=[]
+        for cellule in range(tailleMatrice):
             i = random.randint(0,10)
             if i == 0:
-                row.append(random.randint(1,11))
+                listeCellule.append(random.randint(1,11))
             elif i == 1:
-                row.append(-random.randint(1,11))
+                listeCellule.append(-random.randint(1,11))
             else:
-                row.append(0)
-        mat.append(row)
+                listeCellule.append(0)
+        mat.append(listeCellule)
     return mat
 
 
-def step(mat):
-    next_mat = []
+def etape(mat):
+    prochaine_matrice = []
     for x in range(len(mat)):
-        next_row = []
+        prochaine_listeCellule = []
         for y in range(len(mat)):
-            #print(force(mat, x, y))
             if force(mat, x, y) > 0:
-                next_row.append(random.randint(1,11))
+                prochaine_listeCellule.append(random.randint(1,11))
             elif force(mat, x, y) < 0:                
-                next_row.append(-random.randint(1,11))
+                prochaine_listeCellule.append(-random.randint(1,11))
             else:
-                next_row.append(0)
-        next_mat.append(next_row)
-    return next_mat
+                prochaine_listeCellule.append(0)
+        prochaine_matrice.append(prochaine_listeCellule)
+    return prochaine_matrice
 
 def compter(mat, population):
     compteur = 0
-    for row in mat:
-        for column in row:
+    for ligne in mat:
+        for cellule in ligne:
             if population == 0:
-                if column == 0:
+                if cellule == 0:
                     compteur += 1
-            elif column*population > 0:
+            elif cellule*population > 0:
                 compteur += 1
     return compteur
 
-size = 13
-mat = generate_matrix(size)
+tailleMatrice = 13
+mat = generer_matrice(tailleMatrice)
 fen = Tk()
 fen.wm_attributes("-topmost", 1)
-global grille, graph
+global grille, graphe
 grille = Canvas(fen, width=600, height=600, background='white')
 grille.pack(side=LEFT)
-graph = Canvas(fen, width=600, height=600, background='white')
-graph.pack(side=RIGHT)
+graphe = Canvas(fen, width=600, height=600, background='white')
+graphe.pack(side=RIGHT)
 liste_rouge = []
 liste_bleu = []
-global line_r, line_b
-line_r = graph.create_line(0,0,0,0)
-line_b = graph.create_line(0,0,0,0)
+global ligne_rouge, ligne_bleu
+ligne_rouge = graphe.create_line(0,0,0,0)
+ligne_bleu = graphe.create_line(0,0,0,0)
 #Label(fen,text=str(compteur), fg="black",width=31,font="parade 42 bold")
-liste= []
-liste2= []
-liste3= []
+liste_vide= []
 for loop in range(100):
-    draw(mat)
-    liste.append(compter(mat,+1))
-    liste2.append(compter(mat,-1))
-    liste3.append(compter(mat,0))
+    afficher(mat)
+    liste_vide.append(compter(mat,0))
     liste_rouge.append(compter(mat, +1))
-    tracer(liste_rouge, size, 'red')
+    tracer(liste_rouge, tailleMatrice, 'red')
     liste_bleu.append(compter(mat, -1))
-    tracer(liste_bleu, size, 'blue')
+    tracer(liste_bleu, tailleMatrice, 'blue')
     fen.update()
-    mat=step(mat)
-
-plt.plot(liste)
-plt.plot(liste2)
-plt.plot(liste3)
-plt.ylabel('nombre de rouge')
+    mat=etape(mat)
+plt.plot(liste_rouge)
+plt.plot(liste_bleu)
+plt.plot(liste_vide)
+plt.ylabel('évolution des populations')
 plt.xlabel('temps')
 plt.show()
 
