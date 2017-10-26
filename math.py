@@ -82,37 +82,39 @@ def compter(mat, population):
                 compteur += 1
     return compteur
 
-tailleMatrice = 13
-mat = generer_matrice(tailleMatrice)
-fen = Tk()
-fen.wm_attributes("-topmost", 1)
-global grille, graphe
-grille = Canvas(fen, width=600, height=600, background='white')
-grille.pack(side=LEFT)
-graphe = Canvas(fen, width=600, height=600, background='white')
-graphe.pack(side=RIGHT)
-liste_rouge = []
-liste_bleu = []
-global ligne_rouge, ligne_bleu
-ligne_rouge = graphe.create_line(0,0,0,0)
-ligne_bleu = graphe.create_line(0,0,0,0)
-#Label(fen,text=str(compteur), fg="black",width=31,font="parade 42 bold")
-liste_vide= []
-for loop in range(100):
-    afficher(mat)
-    liste_vide.append(compter(mat,0))
-    liste_rouge.append(compter(mat, +1))
-    tracer(liste_rouge, tailleMatrice, 'red')
-    liste_bleu.append(compter(mat, -1))
-    tracer(liste_bleu, tailleMatrice, 'blue')
-    fen.update()
-    mat=etape(mat)
-plt.plot(liste_rouge)
-plt.plot(liste_bleu)
-plt.plot(liste_vide)
-plt.ylabel('évolution des populations')
-plt.xlabel('temps')
-plt.show()
+def executer(tailleMatrice):
+    global grille, graphe, ligne_rouge, ligne_bleu
+    mat = generer_matrice(tailleMatrice)
+    fen = Tk()
+    fen.wm_attributes("-topmost", 1)
+    grille = Canvas(fen, width=600, height=600, background='white')
+    grille.pack(side=LEFT)
+    graphe = Canvas(fen, width=600, height=600, background='white')
+    graphe.pack(side=RIGHT)
+    liste_rouge = []
+    liste_bleu = []
+    ligne_rouge = graphe.create_line(0,0,0,0)
+    ligne_bleu = graphe.create_line(0,0,0,0)
+    #Label(fen,text=str(compteur), fg="black",width=31,font="parade 42 bold")
+    liste_vide= []
+    for loop in range(40):
+        afficher(mat)
+        liste_vide.append(compter(mat,0))
+        liste_rouge.append(compter(mat, +1))
+        tracer(liste_rouge, tailleMatrice, 'red')
+        liste_bleu.append(compter(mat, -1))
+        tracer(liste_bleu, tailleMatrice, 'blue')
+        fen.update()
+        mat=etape(mat)
 
-fen.mainloop()    
+    fen.destroy()
+
+def graph():
+    plt.plot(liste_rouge)
+    plt.plot(liste_bleu)
+    plt.plot(liste_vide)
+    plt.ylabel('evolution des populations')
+    plt.xlabel('temps')
+    plt.show()
+    print("test")
 
