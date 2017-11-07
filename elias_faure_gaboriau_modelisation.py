@@ -104,7 +104,8 @@ def graphique(tailleMatrice, creation_rouge, creation_bleu, force_rouge, force_b
     ligne_rouge = graphe.create_line(0,0,0,0)
     ligne_bleu = graphe.create_line(0,0,0,0)
     liste_vide= []
-    for loop in range(tailleMatrice * 5):
+    loop = 0
+    while loop < tailleMatrice * 5 and compter(mat, +1) != 0 and compter(mat, +1) != tailleMatrice * tailleMatrice: 
         afficher(mat)
         liste_vide.append(compter(mat,0))
         liste_rouge.append(compter(mat, +1))
@@ -114,6 +115,7 @@ def graphique(tailleMatrice, creation_rouge, creation_bleu, force_rouge, force_b
         fen.update()
         time.sleep(1)
         mat=etape(mat)
+        loop += 1
     fen.destroy()
     plt.plot(liste_rouge)
     plt.plot(liste_bleu)
