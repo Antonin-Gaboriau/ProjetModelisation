@@ -1,3 +1,5 @@
+# Roger ELIAS   Thomas FAURE   Antonin GABORIAU
+
 from Tkinter import *
 import random
 import time
@@ -19,12 +21,13 @@ def afficher(mat):
 
 def tracer(liste, tailleMatrice, population):
     global graphe, ligne_rouge, ligne_bleu
-    top = graphe.create_line(0, 500-(tailleMatrice*tailleMatrice*), 600, 500-(tailleMatrice*tailleMatrice*2), fill='black')
+    top = graphe.create_line(0, 100, 600, 100, fill='black')
     bottom = graphe.create_line(0, 500, 600, 500, fill='black')
     listePoint = [0,500]
     for i in range(len(liste)):
         listePoint.append(int(600/(len(liste))*(i+1)))
-        listePoint.append(500-int(liste[i])*2)
+        listePoint.append(500-int(liste[i])*400/(tailleMatrice*tailleMatrice))
+        print(500/(tailleMatrice*tailleMatrice))
     if population == 'red':
         graphe.delete(ligne_rouge)
         ligne_rouge = graphe.create_line(listePoint, fill='red')
@@ -37,7 +40,7 @@ def force(mat, x, y):
     for i in range(-1,2):
         for j in range(-1,2):
             if x+i>=0 and x+i<len(mat) and y+j>=0 and y+j<len(mat) and (i!=0 or j!=0):
-                #si le voisin est dans la matrice  et pas lui même
+                #si le voisin est dans la matrice  et pas lui mÃªme
                 cpt += mat[x+i][y+j]
     return cpt
 
@@ -139,10 +142,10 @@ def executer_sans_graphique(tailleMatrice, creation_rouge, creation_bleu, force_
 
 def calcul():
     tailleMatrice = int(input("Taille de la matrice : "))
-    creation_rouge = int(input("Chance de création d'une cellule rouge au départ : "))
-    creation_bleu = int(input("Chance de création d'une cellule bleu au départ : "))
-    force_rouge = int(input("Force de chaque cellule rouges (0 pour alléatoire entre 1 et 10) : "))
-    force_bleu = int(input("Force de chaque cellule bleus (0 pour alléatoire entre 1 et 10) : "))
+    creation_rouge = int(input("Chance de creation d'une cellule rouge au depart : "))
+    creation_bleu = int(input("Chance de creation d'une cellule bleu au depart : "))
+    force_rouge = int(input("Force de chaque cellule rouges (0 pour alleatoire entre 1 et 10) : "))
+    force_bleu = int(input("Force de chaque cellule bleus (0 pour alleatoire entre 1 et 10) : "))
     nombre_execution = int(input("Executer combien de fois ? "))
     for loop in range(nombre_execution):
         print(str(executer_sans_graphique(tailleMatrice, creation_rouge, creation_bleu, force_rouge, force_bleu)))
