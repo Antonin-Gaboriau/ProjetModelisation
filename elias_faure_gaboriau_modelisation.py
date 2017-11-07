@@ -27,7 +27,6 @@ def tracer(liste, tailleMatrice, population):
     for i in range(len(liste)):
         listePoint.append(int(600/(len(liste))*(i+1)))
         listePoint.append(500-int(liste[i])*400/(tailleMatrice*tailleMatrice))
-        print(500/(tailleMatrice*tailleMatrice))
     if population == 'red':
         graphe.delete(ligne_rouge)
         ligne_rouge = graphe.create_line(listePoint, fill='red')
@@ -123,7 +122,6 @@ def graphique(tailleMatrice, creation_rouge, creation_bleu, force_rouge, force_b
     plt.ylabel('evolution des populations')
     plt.xlabel('temps')
     plt.show()
-    print("test")
 
 def executer_sans_graphique(tailleMatrice, creation_rouge, creation_bleu, force_rouge, force_bleu):
     mat = generer_matrice(tailleMatrice, creation_rouge, creation_bleu, force_rouge, force_bleu)
